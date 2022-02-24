@@ -1,0 +1,115 @@
+﻿@page "/offerproduct/{Id:int}"
+@inject HttpClient Http
+@using System.Net.Http.Json
+@inject IJSRuntime js
+@inject NavigationManager navigation
+<div class="card">
+    <div class="card-body my-2">
+        <h3>Offer</h3>
+        <hr />
+        <EditForm Model="@product" OnValidSubmit="@Submit">
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <p>Price : @product.OriginalPrice</p>
+                <label for="pr">For Direct Purchase</label><br />
+                <InputCheckbox id="checkbox" @bind-Value="@product.IsSold" />
+                <ValidationMessage For="() => product.IsSold" />
+            </div>
+            <button class="btn btn-primary btn-block">Buy</button>
+
+            <br />
+
+            <div class="form-group">
+                <label for="id">Offer Price With Percent</label><br />
+                <p>Price : @product.NewOfferPrice</p>
+                <InputSelect id="id" @bind-Value="@product.OfferPercent">
+                    <option value=""></option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="40">40</option>
+                </InputSelect>
+
+                <button class="btn btn-primary ">Ok</button>
+                <ValidationMessage For="() => product.OfferPercent" />
+            </div>
+            <br />
+
+
+
+
+
+
+            <div class="form-group">
+                <label for="id">Offer Price</label><br />
+                <InputNumber id="id" @bind-Value="@product.OfferPrice" />
+                <ValidationMessage For="() => product.OfferPrice" />
+            </div>
+
+            @if (IsSubmit)
+            {
+                <button class="btn btn-primary btn-block" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="sr-only">Loading...</span>
+                </button> }
+            else
+            {
+                <button class="btn btn-primary btn-block">Give Offer</button>}
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    ProjectUnluCo.Models.Product product = new();
+    private bool IsSubmit = false;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await Http.GetFromJsonAsync<ProjectUnluCo.Models.Product>("http://localhost:3000/ad?id=" + Id);
+    }
+
+    async Task Submit()
+
+    {
+        if (product.OfferPercent > 0)
+        {
+            product.OfferPercent *= product.OriginalPrice / 100;
+            product.NewOfferPrice = product.OriginalPrice - product.OfferPercent;
+            if (product.NewOfferPrice > 100)
+            {
+                product.OfferPrice = product.NewOfferPrice;
+            }
+        }
+
+
+        if (product.IsSold == false)
+        {
+            if (product.IsOfferable == true)
+            {
+                await js.InvokeVoidAsync("alert", "Offer Successful");
+                product.Id = Id;
+                var data = await Http.PutAsJsonAsync<ProjectUnluCo.Models.Product>("http://localhost:3000/api/Product/offer", product);
+
+            }
+            else
+            {
+                await js.InvokeVoidAsync("alert", "Offer is False");
+                navigation.NavigateTo("/listproduct");
+            }
+        }
+
+        else
+        {
+            product.Id = Id;
+            var data = await Http.DeleteAsync("http://localhost:3000/api/Product/delete?id="+Id);
+            await js.InvokeVoidAsync("alert", "Product purchase successful");
+            navigation.NavigateTo("/listproduct");
+        }
+    }
+
+}

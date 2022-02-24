@@ -1,0 +1,123 @@
+﻿@page "/addproduct"
+@inject IHttpClientFactory ClientFactory
+@inject Blazored.LocalStorage.ILocalStorageService Storage
+@inject IJSRuntime js
+<div class="card">
+    <div class="card-body my-2">
+        <h3>Add Product</h3>
+        <hr />
+        <EditForm Model="@product" OnValidSubmit="@Submit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="ProductId">Product Id</label><br />
+                <InputNumber id="ProductId" @bind-Value="product.Id" />
+                <ValidationMessage For="() => product.Id" />
+            </div>
+            <div class="form-group">
+                <label for="Brand">Brand</label><br />
+                <InputSelect id="Brand" @bind-Value="product.Brand">
+                    <option value=""></option>
+                    <option value="Dell">Dell</option>
+                    <option value="Lenovo">Lenovo</option>
+                    <option value="Hp">Hp</option>
+                    <option value="Apple">Apple</option>
+                    <option value="Monster">Monster</option>
+
+                </InputSelect>
+                <ValidationMessage For="() => product.Brand" />
+            </div>
+            <div class="form-group">
+                <label for="Name">Name</label><br />
+                <InputText id="Name" @bind-Value="product.Name" />
+                <ValidationMessage For="() => product.Name" />
+            </div>
+            <div class="form-group">
+                <label for="Description">Description</label><br />
+                <InputText id="Description" @bind-Value="product.Description" />
+                <ValidationMessage For="() => product.Description" />
+            </div>
+            <div class="form-group">
+                <label for="ImageUrl">Image Url</label><br />
+                <InputText id="ImageUrl" @bind-Value="product.ImageUrl" />
+                <ValidationMessage For="() => product.ImageUrl" />
+            </div>
+
+            <div class="form-group">
+                <label for="Color">Colord</label><br />
+                <InputSelect id="Color" @bind-Value="product.Color">
+                    <option value=""></option>
+                    <option value="Black">Black</option>
+                    <option value="Gray">Gray</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Pink">Pink</option>
+                    <option value="Green">Green</option>
+                    <option value="Gold">Gold</option>
+                    <option value="Red">Red</option>
+                    <option value="White">White</option>
+                    <option value="Silver">Silver</option>
+                    <option value="MultiColor">Multi Color</option>
+                </InputSelect>
+                <ValidationMessage For="() => product.Color" />
+            </div>
+            <div class="form-group">
+                <label for="OriginalPrice">Price</label><br />
+                <InputNumber id="OriginalPrice" @bind-Value="product.OriginalPrice" />
+                <ValidationMessage For="() => product.OriginalPrice" />
+            </div>
+            <div class="form-group">
+                <label for="IsOfferable">Is Offerable</label><br />
+                <InputCheckbox id="checkbox" @bind-Value="product.IsOfferable" />
+                <ValidationMessage For="() => product.IsOfferable" />
+            </div>
+            <div class="form-group">
+                <label for="usingStatus">Using Status</label><br />
+                <InputSelect id="usingStatus" @bind-Value="product.usingStatus">
+                    <option value=""></option>
+                    <option value="New">New</option>
+                    <option value="Used">Used</option>
+                </InputSelect>
+                <ValidationMessage For="() => product.usingStatus" />
+            </div>
+            <div class="form-group">
+                <label for="CategoryId">Category Id</label><br />
+                <InputNumber id="CategoryId" @bind-Value="product.CategoryId" />
+                <ValidationMessage For="() => product.CategoryId" />
+            </div>
+            @if (IsSubmit)
+            {
+                <button class="btn btn-primary btn-block" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="sr-only">Loading...</span>
+                </button> }
+            else
+            {
+                <button class="btn btn-primary btn-block">Submit</button>}
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private bool IsSubmit = false;
+    public ProjectUnluCo.Models.Product product = new();
+    private async Task Submit()
+    {
+
+        var client = ClientFactory.CreateClient();
+
+        var response = await client.PostAsJsonAsync("http://localhost:3000/api/product", product);
+
+
+        if (response.IsSuccessStatusCode)
+        {
+            string addProduct = await response.Content.ReadAsStringAsync();
+            await js.InvokeVoidAsync("alert", "Save Successful");
+            
+            await Storage.SetItemAsync("profile", product);
+
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Save Failed!!");
+        }
+    }
+}

@@ -1,0 +1,70 @@
+﻿@page "/login"
+@layout LoginLayout
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject IJSRuntime js
+@inject IHttpClientFactory ClientFactory
+@inject ProtectedLocalStorage Storage
+@using Newtonsoft.Json;
+
+
+@inject NavigationManager NavigationManager
+
+<div class="card">
+    <div class="card-body my-2">
+        <h3>Login</h3>
+        <hr />
+        <EditForm Model="@model" OnValidSubmit="@Submit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="email">Email</label>
+                <InputText @bind-Value="model.Email" class="form-control" id="email" />
+                <ValidationMessage For="()=>model.Email" />
+            </div>
+            <div class="form-group">
+                <label for="pw">Password</label>
+                <InputText @bind-Value="model.Password" class="form-control" id="pw" />
+                <ValidationMessage For="()=>model.Password" />
+            </div>
+
+            @if (IsSubmit)
+            {
+                <button class="btn btn-primary btn-block" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="sr-only">Loading...</span>
+                </button> }
+            else
+            {
+                <button class="btn btn-primary btn-block">Login</button>}
+        </EditForm>
+    </div>
+</div>
+
+@code { private bool IsSubmit = false;
+
+    public ProjectUnluCo.Models.LoginModel model = new();
+
+    private async Task Submit()
+    {
+
+
+
+        var client = ClientFactory.CreateClient();
+
+        var response = await client.PostAsJsonAsync("http://localhost:3000/api/login", model);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string token = await response.Content.ReadAsStringAsync();
+            await Storage.SetAsync("email", model.Email);
+
+            await js.InvokeVoidAsync("alert", "Login Successful");
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Login Failed!!");
+        }
+
+        IsSubmit = false;
+    }
+}

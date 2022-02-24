@@ -1,0 +1,76 @@
+﻿@page "/updatecategory/{Name}"
+@inject HttpClient Http
+@using System.Net.Http.Json
+@inject IJSRuntime js
+@inject NavigationManager navigation
+<h3>List Product by Brand</h3>
+<a class="btn btn-info" href="/addproduct">Create New</a>
+@if (category.Products == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Color</th>
+                <th>Price</th>
+                <th>Offer?</th>
+                <th>Status</th>
+                <th>Category Id</th>
+                <th>Action</th>
+                <th>Sold</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pro in category.Products)
+            {
+                <tr>
+                    <td>@pro.Id</td>
+                    <td>@pro.Name</td>
+                    <td>@pro.Brand</td>
+                    <td>@pro.Description</td>
+                    <td><img src=@pro.ImageUrl width="75px" height="75px" /></td>
+                    <td>@pro.Color</td>
+                    <td>@pro.OriginalPrice</td>
+                    <td>@pro.IsOfferable</td>
+                    <td>@pro.usingStatus</td>
+                    <td>@pro.CategoryId</td>
+
+                    <td><a href="/offerproduct/@pro.Id">Offer Or Buy</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    ProjectUnluCo.Models.Category category = new();
+    private bool IsSubmit = false;
+
+    [Parameter]
+    public string Name { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        category = await Http.GetFromJsonAsync<ProjectUnluCo.Models.Category>("http://localhost:3000/api/Category/name?name=" + Name);
+
+    }
+    async Task Submit()
+    {
+        category.Name = Name;
+        var data = await Http.GetFromJsonAsync<ProjectUnluCo.Models.Category>("http://localhost:3000/api/category/name");
+        await js.InvokeVoidAsync("alert", "Category ");
+        navigation.NavigateTo("/listcategory");
+    }
+
+}

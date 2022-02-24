@@ -1,0 +1,65 @@
+﻿@page "/addcategory"
+@inject IHttpClientFactory ClientFactory
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage Storage
+@inject IJSRuntime js
+<div class="card">
+    <div class="card-body my-2">
+        <h3>Add Category</h3>
+        <hr />
+        <EditForm Model="@category" OnValidSubmit="@Submit">
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <label for="Email">Category Id</label><br />
+                <InputNumber id="Email" @bind-Value="category.CategoryId" />
+                <ValidationMessage For="() => category.CategoryId" />
+            </div>
+            <div class="form-group">
+                <label for="Email">Name</label><br />
+                <InputText id="Email" @bind-Value="category.Name" />
+                <ValidationMessage For="() => category.Name" />
+            </div>
+            <div class="form-group">
+                <label for="Password">Image Url</label><br />
+                <InputText id="Password" @bind-Value="category.ImageUrl" />
+                <ValidationMessage For="() => category.ImageUrl" />
+            </div>
+
+            @if (IsSubmit)
+            {
+                <button class="btn btn-primary btn-block" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="sr-only">Loading...</span>
+                </button> }
+            else
+            {
+                <button class="btn btn-primary btn-block">Submit</button>}
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private bool IsSubmit = false;
+    public ProjectUnluCo.Models.Category category = new();
+    private async Task Submit()
+    {
+
+        var client = ClientFactory.CreateClient();
+
+        var response = await client.PostAsJsonAsync("http://localhost:3000/api/category", category);
+
+
+        if (response.IsSuccessStatusCode)
+        {
+            string addCategory = await response.Content.ReadAsStringAsync();
+            await js.InvokeVoidAsync("alert", "Save Successful");
+            await Storage.SetAsync("add", addCategory);
+
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Save Failed!!");
+        }
+    }
+}
