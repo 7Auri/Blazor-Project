@@ -12,7 +12,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectUnluCo.Context;
-using ProjectUnluCo.Helpers;
 using ProjectUnluCo.Models;
 using ProjectUnluCo.Services;
 using System;
@@ -53,7 +52,7 @@ namespace ProjectUnluCo
 
             services.AddHangfireServer();
 
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             
 

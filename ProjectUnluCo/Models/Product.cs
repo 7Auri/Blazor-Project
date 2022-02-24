@@ -33,7 +33,7 @@ namespace ProjectUnluCo.Models
         [Required(ErrorMessage = "Kullanım Durumu Giriniz")]
         public string usingStatus { get; set; }
 
-        [Required(ErrorMessage = "Category Id Zorunludur")]
+        [Required(ErrorMessage = "Category Id Zorunludur.")]
         public int CategoryId { get; set; }
 
         [DefaultValue("False")]

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using ProjectUnluCo.Context;
-using ProjectUnluCo.Helpers;
 using ProjectUnluCo.Models;
 using System;
 using System.Collections.Generic;
