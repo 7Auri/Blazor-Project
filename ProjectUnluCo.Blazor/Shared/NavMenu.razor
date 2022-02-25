@@ -1,4 +1,7 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using Blazored.LocalStorage;
+@inject ILocalStorageService Storage
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">ProjectUnluCo.Blazor</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -8,8 +11,8 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+            <NavLink class="nav-link" href="profile" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Welcome =)@model.Username
             </NavLink>
         </li>
         <li class="nav-item px-3">
@@ -18,9 +21,9 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-        <NavLink class="nav-link" href="listcategory">
-            <span class="oi oi-list" aria-hidden="true"></span>Category
-        </NavLink>
+            <NavLink class="nav-link" href="listcategory">
+                <span class="oi oi-list" aria-hidden="true"></span>Category
+            </NavLink>
         </li>
 
 
@@ -29,11 +32,23 @@
 
 @code {
     private bool collapseNavMenu = true;
-
+    public ProjectUnluCo.Models.LoginModel model = new();
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+ 
+    private async Task ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+
+        var userName = await Storage.GetItemAsStringAsync("username");
+
+        if (userName != null)
+        {
+            model.Username = userName.ToString();
+
+
+
+        }
+
+
     }
 }

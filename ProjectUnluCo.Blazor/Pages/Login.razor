@@ -1,20 +1,23 @@
 ﻿@page "/login"
 @layout LoginLayout
-@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+
 @inject IJSRuntime js
 @inject IHttpClientFactory ClientFactory
-@inject ProtectedLocalStorage Storage
 @using Newtonsoft.Json;
-
-
 @inject NavigationManager NavigationManager
-
+@using Blazored.LocalStorage;
+@inject ILocalStorageService Storage
 <div class="card">
     <div class="card-body my-2">
         <h3>Login</h3>
         <hr />
         <EditForm Model="@model" OnValidSubmit="@Submit">
             <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="username">Username</label>
+                <InputText @bind-Value="model.Username" class="form-control" id="email" />
+                <ValidationMessage For="()=>model.Username" />
+            </div>
             <div class="form-group">
                 <label for="email">Email</label>
                 <InputText @bind-Value="model.Email" class="form-control" id="email" />
@@ -55,7 +58,7 @@
         if (response.IsSuccessStatusCode)
         {
             string token = await response.Content.ReadAsStringAsync();
-            await Storage.SetAsync("email", model.Email);
+            await Storage.SetItemAsStringAsync("username", model.Username);
 
             await js.InvokeVoidAsync("alert", "Login Successful");
             NavigationManager.NavigateTo("/");

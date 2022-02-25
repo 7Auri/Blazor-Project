@@ -44,7 +44,7 @@ namespace ProjectUnluCo.Test
         {
 
             Product model = new Product {Name = "test", OriginalPrice = 99, Brand = "yesil" ,CategoryId=99,OfferPercent=99,
-            OfferPrice=99,IsOfferable=true,NewOfferPrice=99,Color="tests",Description="testtt",Id=99,IsSold=true,ImageUrl="testtest",usingStatus="new"};
+            Offers = { },IsOfferable=true,NewOfferPrice=99,Color="tests",Description="testtt",Id=99,IsSold=true,ImageUrl="testtest",usingStatus="new"};
 
             var client = _factory.CreateClient();
 

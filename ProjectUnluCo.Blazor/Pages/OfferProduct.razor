@@ -3,12 +3,19 @@
 @using System.Net.Http.Json
 @inject IJSRuntime js
 @inject NavigationManager navigation
+@inject IHttpClientFactory ClientFactory
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using Blazored.LocalStorage;
+@inject ILocalStorageService Storage
+
 <div class="card">
     <div class="card-body my-2">
         <h3>Offer</h3>
         <hr />
         <EditForm Model="@product" OnValidSubmit="@Submit">
             <DataAnnotationsValidator />
+
+            <p>@offer.UserName</p>
 
             <div class="form-group">
                 <p>Price : @product.OriginalPrice</p>
@@ -22,8 +29,8 @@
 
             <div class="form-group">
                 <label for="id">Offer Price With Percent</label><br />
-                <p>Price : @product.NewOfferPrice</p>
-                <InputSelect id="id" @bind-Value="@product.OfferPercent">
+                <p>Price : @product.OfferPrice</p>
+                <InputSelect id="id" @bind-Value="@offer.PercentOffer">
                     <option value=""></option>
                     <option value="10">10</option>
                     <option value="20">20</option>
@@ -31,13 +38,10 @@
                     <option value="40">40</option>
                 </InputSelect>
 
-                <button class="btn btn-primary ">Ok</button>
+                <button class="btn btn-primary">Ok</button>
                 <ValidationMessage For="() => product.OfferPercent" />
             </div>
             <br />
-
-
-
 
 
 
@@ -62,39 +66,56 @@
 
 @code {
 
+
+    ProjectUnluCo.Models.Offer offer = new();
     ProjectUnluCo.Models.Product product = new();
+    ProjectUnluCo.Models.LoginModel model = new();
+    ProjectUnluCo.Models.User user = new();
+
     private bool IsSubmit = false;
+    private bool entry = false;
 
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        var userName = await Storage.GetItemAsStringAsync("username");
+
+        if (userName != null)
+        {
+            model.Username = userName.ToString();
+
+            offer.UserName = model.Username;
+
+        }
         product = await Http.GetFromJsonAsync<ProjectUnluCo.Models.Product>("http://localhost:3000/ad?id=" + Id);
+
     }
 
     async Task Submit()
 
     {
-        if (product.OfferPercent > 0)
-        {
-            product.OfferPercent *= product.OriginalPrice / 100;
-            product.NewOfferPrice = product.OriginalPrice - product.OfferPercent;
-            if (product.NewOfferPrice > 100)
-            {
-                product.OfferPrice = product.NewOfferPrice;
-            }
-        }
 
+
+        if (offer.PercentOffer > 0 && entry == false)
+        {
+            offer.PercentOffer *= product.OriginalPrice / 100;
+            product.OfferPrice = product.OriginalPrice - offer.PercentOffer;
+            offer.OfferPrice = product.OfferPrice;
+            entry = true;
+        }
 
         if (product.IsSold == false)
         {
             if (product.IsOfferable == true)
             {
-                await js.InvokeVoidAsync("alert", "Offer Successful");
+
                 product.Id = Id;
                 var data = await Http.PutAsJsonAsync<ProjectUnluCo.Models.Product>("http://localhost:3000/api/Product/offer", product);
-
+                offer.ProductId = Id;
+                var data2 = await Http.PostAsJsonAsync<ProjectUnluCo.Models.Offer>("http://localhost:3000/api/myprofile", offer);
+                await js.InvokeVoidAsync("alert", "Offer Successful");
             }
             else
             {
@@ -106,7 +127,7 @@
         else
         {
             product.Id = Id;
-            var data = await Http.DeleteAsync("http://localhost:3000/api/Product/delete?id="+Id);
+            var data = await Http.DeleteAsync("http://localhost:3000/api/Product/delete?id=" + Id);
             await js.InvokeVoidAsync("alert", "Product purchase successful");
             navigation.NavigateTo("/listproduct");
         }

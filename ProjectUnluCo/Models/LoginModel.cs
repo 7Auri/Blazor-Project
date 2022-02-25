@@ -7,8 +7,7 @@ namespace ProjectUnluCo.Models
     public class LoginModel
     {
 
-        /* [Required]
-        public string Username { get; set; }*/
+        public string Username { get; set; }
 
         [DisplayName("Email"), Required(ErrorMessage = "Email giriniz"),DataType(DataType.EmailAddress)]
         public string Email { get; set; }

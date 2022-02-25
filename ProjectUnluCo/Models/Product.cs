@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectUnluCo.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ProjectUnluCo.Models
 {
-    public class Product
+    public class Product: BaseEntity
     {
-        public int Id { get; set; }
+       
 
         [Required(ErrorMessage = "Ad Girişi Zorunlu"), MaxLength(100)]
         public string Brand { get; set; }
@@ -38,7 +39,8 @@ namespace ProjectUnluCo.Models
 
         [DefaultValue("False")]
         public bool IsSold { get; set; }
-      
+        
+        public List<Offer> Offers { get; set; }
 
     }
 }

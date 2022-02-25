@@ -10,8 +10,8 @@ using ProjectUnluCo.Context;
 namespace ProjectUnluCo.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20220225134230_UnluCo")]
-    partial class UnluCo
+    [Migration("20220225201414_UnluCoProjet")]
+    partial class UnluCoProjet
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -168,6 +168,35 @@ namespace ProjectUnluCo.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ProjectUnluCo.Models.Offer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<double>("OfferPrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PercentOffer")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StatusOffer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Offerz");
                 });
 
             modelBuilder.Entity("ProjectUnluCo.Models.Product", b =>
@@ -345,6 +374,17 @@ namespace ProjectUnluCo.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ProjectUnluCo.Models.Offer", b =>
+                {
+                    b.HasOne("ProjectUnluCo.Models.Product", "Product")
+                        .WithMany("Offers")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ProjectUnluCo.Models.Product", b =>
                 {
                     b.HasOne("ProjectUnluCo.Models.Category", null)
@@ -357,6 +397,11 @@ namespace ProjectUnluCo.Migrations
             modelBuilder.Entity("ProjectUnluCo.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("ProjectUnluCo.Models.Product", b =>
+                {
+                    b.Navigation("Offers");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,23 @@
+﻿
+@page "/logout"
+<h3>LogOut</h3>
+@using Blazored.LocalStorage;
+@inject ILocalStorageService Storage
+@inject IJSRuntime js
+<EditForm Model="@model" OnValidSubmit="@Submit">
+    <button> Çıkış İçin </button>
+
+</EditForm>
+@code {
+    public ProjectUnluCo.Models.LoginModel model = new();
+
+    private async Task Submit()
+    {
+
+        var userName = await Storage.GetItemAsStringAsync("username");
+        if (userName != null) { await Storage.RemoveItemAsync("username");
+            await js.InvokeVoidAsync("alert", "Çıkış Yapıldı");
+        }
+    }
+
+}
