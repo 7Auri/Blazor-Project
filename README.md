@@ -18,7 +18,7 @@ b. Login:
 - UserService üzerinden gerekli işlemler yapılıyor.
 - 3 kez password yanlış girildiğinde hesap 30 dakikalığına bloklanıyor ve bilgi e-maili gönderiliyor.
 <img src="https://user-images.githubusercontent.com/88002831/155618431-19a6c6e9-fc03-4708-a166-7a5ab2ed0afa.png" width="350" height="250">
- ![2022-02-24_00-53-08](https://user-images.githubusercontent.com/88002831/155618269-aa7dab97-a70e-4e6a-a12b-c5dcc078e0bd.png)
+<img src="https://user-images.githubusercontent.com/88002831/155618269-aa7dab97-a70e-4e6a-a12b-c5dcc078e0bd.png" width="250" height="150">
 - Jwt token üretiliyor ve herhangi bir authorization kontrolünde token kullanılabiliyor.
 
 c. Email:
