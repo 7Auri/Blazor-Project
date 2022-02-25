@@ -78,6 +78,7 @@ namespace ProjectUnluCo.Controllers
             };
 
             _context.Products.Add(product);
+           
             _context.SaveChanges();
 
             return Ok();

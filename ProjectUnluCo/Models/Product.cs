@@ -38,7 +38,7 @@ namespace ProjectUnluCo.Models
 
         [DefaultValue("False")]
         public bool IsSold { get; set; }
-        
-       
+      
+
     }
 }

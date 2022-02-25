@@ -23,7 +23,7 @@ namespace ProjectUnluCo.Controllers
         {
             _context = context;
         }
-        //[Authorize]
+     
         [HttpGet]
         public IActionResult Get()
         {
@@ -86,6 +86,8 @@ namespace ProjectUnluCo.Controllers
             return Ok(category);
 
         }
+
+        
         [HttpPost]
         public IActionResult Create(Category model)
         {

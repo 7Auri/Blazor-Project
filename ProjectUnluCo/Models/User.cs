@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace ProjectUnluCo.Models
 {
-   
-    public class User:IdentityUser
-    {
-      
 
-        /* public byte[] PasswordSalt { get; set; }
-         public byte[] PasswordHash { get; set; }*/
+    public class User : IdentityUser
+    {
+
+        
     }
 }

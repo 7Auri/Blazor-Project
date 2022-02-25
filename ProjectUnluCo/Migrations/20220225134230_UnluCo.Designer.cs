@@ -10,8 +10,8 @@ using ProjectUnluCo.Context;
 namespace ProjectUnluCo.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20220224172333_ProjectUnlu")]
-    partial class ProjectUnlu
+    [Migration("20220225134230_UnluCo")]
+    partial class UnluCo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
