@@ -10,7 +10,7 @@ using ProjectUnluCo.Context;
 namespace ProjectUnluCo.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20220226212229_ProjectUnluCo")]
+    [Migration("20220226214144_ProjectUnluCo")]
     partial class ProjectUnluCo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -257,12 +257,6 @@ namespace ProjectUnluCo.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("NewOfferPrice")
-                        .HasColumnType("float");
-
-                    b.Property<double>("OfferPercent")
-                        .HasColumnType("float");
 
                     b.Property<double>("OriginalPrice")
                         .HasColumnType("float");

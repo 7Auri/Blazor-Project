@@ -256,12 +256,6 @@ namespace ProjectUnluCo.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("NewOfferPrice")
-                        .HasColumnType("float");
-
-                    b.Property<double>("OfferPercent")
-                        .HasColumnType("float");
-
                     b.Property<double>("OriginalPrice")
                         .HasColumnType("float");
 

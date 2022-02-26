@@ -43,8 +43,8 @@ namespace ProjectUnluCo.Test
         public async Task Post_Product()
         {
 
-            Product model = new Product {Name = "test", OriginalPrice = 99, Brand = "yesil" ,CategoryId=99,OfferPercent=99,
-            Offers = { },IsOfferable=true,NewOfferPrice=99,Color="tests",Description="testtt",Id=99,IsSold=true,ImageUrl="testtest",usingStatus="new"};
+            Product model = new Product {Name = "test", OriginalPrice = 99, Brand = "yesil" ,CategoryId=99,
+            Offers = { },IsOfferable=true,Color="tests",Description="testtt",Id=99,IsSold=true,ImageUrl="testtest",usingStatus="new"};
 
             var client = _factory.CreateClient();
 
