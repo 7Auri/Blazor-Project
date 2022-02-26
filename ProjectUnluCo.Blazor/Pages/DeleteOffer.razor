@@ -1,0 +1,26 @@
+﻿@page "/deleteoffer/{Id:int}"
+
+@inject HttpClient Http
+@using System.Net.Http.Json
+@inject IJSRuntime js
+@inject NavigationManager navigation
+@using Blazored.LocalStorage;
+@inject ILocalStorageService Storage
+<EditForm Model="@offer" OnValidSubmit="@Submit">
+    <h3>Are you Sure?</h3>
+    <button class="btn btn-primary btn-block">Delete Offer</button>
+    </EditForm>
+    @code {
+        [Parameter]
+        public int Id { get; set; }
+        ProjectUnluCo.Models.Offer offer = new();
+        async Task Submit()
+
+        {
+
+            offer.ProductId = Id;
+            var data = await Http.DeleteAsync("http://localhost:3000/api/myprofile/delete?id=" + Id);
+            await js.InvokeVoidAsync("alert", "Offer Çekildi");
+            navigation.NavigateTo("/profile");
+        }
+    }

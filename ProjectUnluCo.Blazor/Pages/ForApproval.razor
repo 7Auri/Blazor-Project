@@ -1,0 +1,67 @@
+﻿@page "/forapproval/{Id:int}"
+@inject HttpClient Http
+@using System.Net.Http.Json
+@inject IJSRuntime js
+@inject NavigationManager navigation
+@inject IHttpClientFactory ClientFactory
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using Blazored.LocalStorage;
+@inject ILocalStorageService Storage
+
+<h3>For Approval</h3>
+<br />
+<br />
+<EditForm Model="@offerFrom" OnValidSubmit="@Submit">
+    <div class="form-group">
+
+
+        
+        <br />
+        <button class="btn btn-primary btn-block">Are you sure? Ok..</button>
+        
+        <br />
+        <br />
+        <ValidationMessage For="() => offerFrom.Approval" />
+    </div>
+    </EditForm>
+
+
+
+
+    @code {
+
+
+        [Parameter]
+        public int Id { get; set; }
+        public ProjectUnluCo.Models.OfferFrom offerFrom = new();
+
+        protected override async Task OnInitializedAsync()
+        {
+            offerFrom.Approval = false;
+
+            offerFrom = await Http.GetFromJsonAsync<ProjectUnluCo.Models.OfferFrom>("http://localhost:3000/api/MyProfile/idfrom?id=" + Id);
+
+
+        }
+        async Task Submit()
+
+        {
+            if (offerFrom.Approval == false) {
+                offerFrom.ProductId = Id;
+                var data = await Http.PutAsJsonAsync<ProjectUnluCo.Models.OfferFrom>("http://localhost:3000/api/myprofile/putforapproval", offerFrom);
+                await js.InvokeVoidAsync("alert", "Approval Successful");
+                navigation.NavigateTo("/profile");
+            }
+
+            else
+            {
+                await js.InvokeVoidAsync("alert", "You already confirmed!!!");
+                navigation.NavigateTo("/profile");
+            }
+
+
+        }
+
+
+
+    }

@@ -1,0 +1,63 @@
+﻿@page "/offermade"
+@using Blazored.LocalStorage;
+@inject ILocalStorageService Storage
+@inject HttpClient Http
+@using System.Net.Http.Json
+<h3>Offers Made By @offer2.UserName</h3>
+
+<a class="btn btn-info" href="/addproduct">Create New</a>
+<br />
+
+
+@if (offer == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>Product Name</th>
+                <th>Offer Price</th>
+                <th>Original Price</th>
+                <th>Product Image</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var off in offer)
+            {
+            <tr>
+                <td>@off.Product.Name</td>
+                <td>@off.OfferPrice₺</td>
+                <td>@off.Product.OriginalPrice₺</td>
+                <td><img src=@off.Product.ImageUrl width="75" height="75" /></td>
+                <td><a href="/deleteoffer/@off.ProductId">Withdraw Offer</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+
+    public List<ProjectUnluCo.Models.Offer> offer = new();
+    ProjectUnluCo.Models.Offer offer2 = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userName = await Storage.GetItemAsStringAsync("username");
+
+       
+            offer2.UserName = userName.ToString();
+
+            offer = await Http.GetFromJsonAsync<List<ProjectUnluCo.Models.Offer>>("http://localhost:3000/api/MyProfile/name?name=" + offer2.UserName);
+
+        
+
+    }
+}

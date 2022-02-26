@@ -10,8 +10,8 @@ using ProjectUnluCo.Context;
 namespace ProjectUnluCo.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20220225201414_UnluCoProjet")]
-    partial class UnluCoProjet
+    [Migration("20220226212229_ProjectUnluCo")]
+    partial class ProjectUnluCo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -199,6 +199,29 @@ namespace ProjectUnluCo.Migrations
                     b.ToTable("Offerz");
                 });
 
+            modelBuilder.Entity("ProjectUnluCo.Models.OfferFrom", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<bool>("Approval")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OfferFromz");
+                });
+
             modelBuilder.Entity("ProjectUnluCo.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -239,9 +262,6 @@ namespace ProjectUnluCo.Migrations
                         .HasColumnType("float");
 
                     b.Property<double>("OfferPercent")
-                        .HasColumnType("float");
-
-                    b.Property<double>("OfferPrice")
                         .HasColumnType("float");
 
                     b.Property<double>("OriginalPrice")
@@ -378,6 +398,17 @@ namespace ProjectUnluCo.Migrations
                 {
                     b.HasOne("ProjectUnluCo.Models.Product", "Product")
                         .WithMany("Offers")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ProjectUnluCo.Models.OfferFrom", b =>
+                {
+                    b.HasOne("ProjectUnluCo.Models.Product", "Product")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -25,7 +25,7 @@ namespace ProjectUnluCo.Models
 
         [Required(ErrorMessage = "Fiyat Bilgisi Giriniz")]
         public double OriginalPrice { get; set; }
-        public double OfferPrice { get; set; }
+       // public double OfferPrice { get; set; }
         public double NewOfferPrice { get; set; }
         public double OfferPercent {get;set;}
         [DefaultValue("False")]

@@ -33,7 +33,7 @@
 
                         <td>@cate.Name</td>
                         <td><img src=@cate.ImageUrl width="75px" height="75px" /></td>
-                        <td><a href="/updatecategory/@cate.Name">List Product by Brand</a></td>
+                        <td><a href="/listofid/@cate.Name">List Product by Brand</a></td>
                     </tr>
                 }
             </tbody>
@@ -46,25 +46,8 @@
 
         protected override async Task OnInitializedAsync()
         {
-            var client = ClientFactory.CreateClient();
-
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:3000/api/category");
-
-
-            var token = await Storage.GetAsync<string>("token");
-
-            request.Headers.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Authorization", "Bearer <token>");
-
-            HttpResponseMessage response = await Http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var json = await response.Content.ReadAsStringAsync();
+                         
                 categories = await Http.GetFromJsonAsync<List<ProjectUnluCo.Models.Category>>("http://localhost:3000/api/category");
-            }
-
-
 
         }
 

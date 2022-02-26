@@ -1,0 +1,86 @@
+﻿@page "/comingoffer"
+@using Blazored.LocalStorage;
+@inject ILocalStorageService Storage
+@inject HttpClient Http
+@using System.Net.Http.Json
+@inject NavigationManager navigation
+
+<h3>Coming Offer</h3>
+
+<br />
+<br />
+@if (offer == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Product Name</th>
+                <th>Offer Price</th>
+                <th>Original Price</th>
+                <th>Product Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var off in offerList)
+            {
+                <tr>
+                    <td>UserName: @off.UserName</td>
+                    <td>@off.Product.Name</td>
+                    <td>@off.OfferPrice₺</td>
+                    <td>@off.Product.OriginalPrice₺</td>
+                    <td><img src=@off.Product.ImageUrl width="75" height="75" /></td>
+                    <td><a href="forapproval/@off.ProductId">For Approval</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+    string name;
+    public List<ProjectUnluCo.Models.OfferFrom> offerFrom = new();
+    public List<ProjectUnluCo.Models.Offer> offerList = new();
+    ProjectUnluCo.Models.OfferFrom offerF = new();
+    ProjectUnluCo.Models.Offer offer = new();
+    protected override async Task OnInitializedAsync()
+    {
+        var userName = await Storage.GetItemAsStringAsync("username");
+
+
+        offerF.UserName = userName.ToString();
+
+        offerFrom = await Http.GetFromJsonAsync<List<ProjectUnluCo.Models.OfferFrom>>("http://localhost:3000/api/MyProfile/myproduct?name=" + offerF.UserName);
+        foreach (var item in offerFrom)
+        {
+            
+            var UserName = item.UserName;
+
+            offerList = await Http.GetFromJsonAsync<List<ProjectUnluCo.Models.Offer>>("http://localhost:3000/api/MyProfile");
+            foreach (var item2 in offerList)
+            {
+                if (item2.UserName != UserName)
+                {
+                    name = item2.UserName;
+                    break;
+                }
+
+            }
+
+        }
+
+        offerList = await Http.GetFromJsonAsync<List<ProjectUnluCo.Models.Offer>>("http://localhost:3000/api/MyProfile/name?name="+name);
+
+
+
+
+    }}

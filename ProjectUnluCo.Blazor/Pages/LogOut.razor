@@ -1,11 +1,15 @@
 ﻿
 @page "/logout"
-<h3>LogOut</h3>
 @using Blazored.LocalStorage;
 @inject ILocalStorageService Storage
 @inject IJSRuntime js
+@inject NavigationManager NavigationManager
+
+<br />
+<br />
+<br />
 <EditForm Model="@model" OnValidSubmit="@Submit">
-    <button> Çıkış İçin </button>
+    <button class="btn btn-danger btn-block"> Are You Sure? =/ Logout </button>
 
 </EditForm>
 @code {
@@ -15,8 +19,15 @@
     {
 
         var userName = await Storage.GetItemAsStringAsync("username");
-        if (userName != null) { await Storage.RemoveItemAsync("username");
-            await js.InvokeVoidAsync("alert", "Çıkış Yapıldı");
+        if (userName != null)
+        {
+            await Storage.RemoveItemAsync("username");
+            await js.InvokeVoidAsync("alert", "Logged Out. See You");
+            NavigationManager.NavigateTo("/");
+        }
+        else {
+            await js.InvokeVoidAsync("alert", "Not Logged In");
+            NavigationManager.NavigateTo("login");
         }
     }
 

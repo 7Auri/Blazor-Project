@@ -11,6 +11,7 @@
 <div class="card">
     <div class="card-body my-2">
         <h3>Offer</h3>
+        <br />
         <hr />
         <EditForm Model="@product" OnValidSubmit="@Submit">
             <DataAnnotationsValidator />
@@ -29,7 +30,7 @@
 
             <div class="form-group">
                 <label for="id">Offer Price With Percent</label><br />
-                <p>Price : @product.OfferPrice</p>
+                <p>Price : @offer.OfferPrice</p>
                 <InputSelect id="id" @bind-Value="@offer.PercentOffer">
                     <option value=""></option>
                     <option value="10">10</option>
@@ -46,9 +47,9 @@
 
 
             <div class="form-group">
-                <label for="id">Offer Price</label><br />
-                <InputNumber id="id" @bind-Value="@product.OfferPrice" />
-                <ValidationMessage For="() => product.OfferPrice" />
+                <label for="id">Offer Price ₺</label><br />
+                <InputNumber id="id" @bind-Value="@offer.OfferPrice" />
+                <ValidationMessage For="() => offer.OfferPrice" />
             </div>
 
             @if (IsSubmit)
@@ -101,8 +102,8 @@
         if (offer.PercentOffer > 0 && entry == false)
         {
             offer.PercentOffer *= product.OriginalPrice / 100;
-            product.OfferPrice = product.OriginalPrice - offer.PercentOffer;
-            offer.OfferPrice = product.OfferPrice;
+            offer.OfferPrice = product.OriginalPrice - offer.PercentOffer;
+            
             entry = true;
         }
 
@@ -111,8 +112,6 @@
             if (product.IsOfferable == true)
             {
 
-                product.Id = Id;
-                var data = await Http.PutAsJsonAsync<ProjectUnluCo.Models.Product>("http://localhost:3000/api/Product/offer", product);
                 offer.ProductId = Id;
                 var data2 = await Http.PostAsJsonAsync<ProjectUnluCo.Models.Offer>("http://localhost:3000/api/myprofile", offer);
                 await js.InvokeVoidAsync("alert", "Offer Successful");

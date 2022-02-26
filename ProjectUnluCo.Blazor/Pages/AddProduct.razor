@@ -8,6 +8,7 @@
         <hr />
         <EditForm Model="@product" OnValidSubmit="@Submit">
             <DataAnnotationsValidator />
+
             <div class="form-group">
                 <label for="ProductId">Product Id</label><br />
                 <InputNumber id="ProductId" @bind-Value="product.Id" />
@@ -43,7 +44,7 @@
             </div>
 
             <div class="form-group">
-                <label for="Color">Colord</label><br />
+                <label for="Color">Color</label><br />
                 <InputSelect id="Color" @bind-Value="product.Color">
                     <option value=""></option>
                     <option value="Black">Black</option>
@@ -83,6 +84,7 @@
                 <InputNumber id="CategoryId" @bind-Value="product.CategoryId" />
                 <ValidationMessage For="() => product.CategoryId" />
             </div>
+           
             @if (IsSubmit)
             {
                 <button class="btn btn-primary btn-block" type="button" disabled>
@@ -92,6 +94,7 @@
             else
             {
                 <button class="btn btn-primary btn-block">Submit</button>}
+
         </EditForm>
     </div>
 </div>
@@ -99,9 +102,10 @@
 @code {
     private bool IsSubmit = false;
     public ProjectUnluCo.Models.Product product = new();
+    public ProjectUnluCo.Models.OfferFrom offer = new();
     private async Task Submit()
     {
-
+ 
         var client = ClientFactory.CreateClient();
 
         var response = await client.PostAsJsonAsync("http://localhost:3000/api/product", product);
@@ -111,7 +115,7 @@
         {
             string addProduct = await response.Content.ReadAsStringAsync();
             await js.InvokeVoidAsync("alert", "Save Successful");
-            
+
             await Storage.SetItemAsync("profile", product);
 
         }

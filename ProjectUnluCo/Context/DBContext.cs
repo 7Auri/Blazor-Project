@@ -25,5 +25,6 @@ namespace ProjectUnluCo.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Offer> Offerz { get; set; }
+        public DbSet<OfferFrom> OfferFromz{ get; set; }
     }
 }

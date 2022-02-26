@@ -5,15 +5,19 @@ html, body {
 }
 
 a, .btn-link {
-    color: #0366d6;
+    color: #ce56b4;
 }
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #916a92 !important;
+    border-color: #b81717 !important;
 }
-
+.btn-info {
+    color: #fff;
+    background-color: #916a92 !important;
+    border-color: #b81717 !important;
+}
 .content {
     padding-top: 1.1rem;
 }

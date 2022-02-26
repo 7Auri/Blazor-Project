@@ -85,20 +85,7 @@ namespace ProjectUnluCo.Controllers
 
 
         }
-        [HttpPut("offer")] //teklif vermek
-        public IActionResult GiveOffer(Product model)
-        {
-            var pro = _context.Products.SingleOrDefault(x => x.Id == model.Id);
-            if (pro == null) { return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = "Böyle bir ürün yok" }); }
-            if (pro.IsOfferable == false) { return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = "Teklife Kapalı" }); }
-            if (model.OfferPrice < 0) { return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = "Eksi değer girilemez" }); }
-           
-            pro.OfferPrice = model.OfferPrice;
-
-            _context.SaveChanges();
-
-            return Ok(model.Id);
-        }
+       
         [HttpDelete("delete")]
         public IActionResult DeleteCat(int id)
         {

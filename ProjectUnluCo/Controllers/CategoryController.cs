@@ -30,7 +30,7 @@ namespace ProjectUnluCo.Controllers
             var categories = from c in _context.Categories
                              select new
                              {
-                                 Id = c.CategoryId,
+                                 CategoryId = c.CategoryId,
                                  Name = c.Name,
                                  ImageUrl = c.ImageUrl
                              };
@@ -61,7 +61,7 @@ namespace ProjectUnluCo.Controllers
                             where c.CategoryId == id
                             select new
                             {
-                                Id = c.CategoryId,
+                                CategoryId = c.CategoryId,
                                 Name = c.Name,
                                 ImageUrl = c.ImageUrl,
                                 Products = c.Products
@@ -77,7 +77,7 @@ namespace ProjectUnluCo.Controllers
                             where c.Name  == name
                             select new
                             {
-                                Id = c.CategoryId,
+                                CategoryId = c.CategoryId,
                                 Name = c.Name,
                                 ImageUrl = c.ImageUrl,
                                 Products = c.Products
