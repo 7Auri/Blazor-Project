@@ -1,5 +1,6 @@
 # ProjectUnluCo
 
+https://user-images.githubusercontent.com/88002831/155859705-c8afe001-9056-478a-b78d-892b148e80c7.mp4
 
 1.WebApi
 
@@ -40,14 +41,19 @@ e. Product:
 
 - IsOfferable'ye göre teklif verilebiliyor. False ise teklif yapılamıyor.
 <img src="https://user-images.githubusercontent.com/88002831/155620319-2dd9bf1c-d734-4800-ae30-a58be54400ca.png" width="350" height="50">
-<img src="https://user-images.githubusercontent.com/88002831/155620335-9146baf2-98bf-4f53-a6c8-bb7f54f37780.png" width="350" height="250">
+<img src="https://user-images.githubusercontent.com/88002831/155859813-ce48d586-5039-42c4-90ce-78469695eef1.png" width="350" height="250">
 - Kullanılan trigger ile ürünün orjinal fiyatının x yüzdesi alınabiliyor ve front-end tarafında seçilen yüzdeye göre offerprice belirlenebiliyor.
 - Ürün ekleme için gerekli validasyonlar eklendi.
 - Url ile image eklenebiliyor.
 - Gerekli required'lerin tamamı eklendi.
 - Blazor'da kategoriye göre ürünler ulaşmak mümkün.
 
-f. Ekler:
+f. Profil:
+- Yaptığımız offerlar listelenebiliyor.
+- Ürünlerimize gelen offerlar görülebiliyor.
+- Gelen offerlara onay verilebiliyor.
+
+g. Ekler:
 
 - TokenGenerator, ProductController ve CategoryController için testler yazıldı.
 - Trigger ve stored procedure eklendi. 
