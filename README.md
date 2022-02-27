@@ -52,6 +52,7 @@ f. Profil:
 - Yaptığımız offerlar listelenebiliyor.
 - Ürünlerimize gelen offerlar görülebiliyor.
 - Gelen offerlara onay verilebiliyor.
+- Trigger ile statü değişiyor.
 
 g. Ekler:
 
