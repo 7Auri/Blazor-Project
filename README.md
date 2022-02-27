@@ -56,8 +56,10 @@ f. Profil:
 g. Ekler:
 
 - TokenGenerator, ProductController ve CategoryController için testler yazıldı.
+ <img src="https://user-images.githubusercontent.com/88002831/155878254-d8e86fa5-4a17-4edf-941d-552a85ddb970.png" width="850" height="300">
 - Trigger ve stored procedure eklendi. 
-<img src="https://user-images.githubusercontent.com/88002831/155620167-ed566f10-518d-4407-9981-655ff79fa889.png" width="450" height="300">
+<img src="https://user-images.githubusercontent.com/88002831/155878215-64182b06-94da-432b-a869-543a97346dbe.png" width="850" height="300">
 <img src="https://user-images.githubusercontent.com/88002831/155620246-ccb19387-1714-46f0-8e7b-c6f548058da3.png" width="450" height="300">
+
 
 
